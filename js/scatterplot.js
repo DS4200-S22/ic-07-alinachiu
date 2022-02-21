@@ -7,11 +7,77 @@ Modified: 12/08/21
 */
 
 // Build your scatterplot in this file 
-
-
-
-
-
-
-
-
+d3.csv("data/scatter.csv").then((data) => {
+  
+    // We will need scales for all of the following charts to be global
+    let x1, y1, x2, y2, x3, y3;  
+  
+    // We will need keys to be global
+    let xKey1, yKey1, xKey2, yKey2, xKey3, yKey3;
+  
+    // Scatterplot1
+    {
+      let xKey1 = "Sepal_Length";
+      let yKey1 = "Petal_Length";
+  
+      // Find max x
+      let maxX1 = d3.max(data, (d) => { return d[xKey1]; });
+  
+      // Create X scale
+      let x1 = d3.scaleLinear()
+                  .domain([0,maxX1])
+                  .range([margin.left, width-margin.right]); 
+      
+      // Add x axis 
+      svg1.append("g")
+          .attr("transform", `translate(0,${height - margin.bottom})`) 
+          .call(d3.axisBottom(x1))   
+          .attr("font-size", '20px')
+          .call((g) => g.append("text")
+                        .attr("x", width - margin.right)
+                        .attr("y", margin.bottom - 4)
+                        .attr("fill", "black")
+                        .attr("text-anchor", "end")
+                        .text(xKey1)
+        );
+  
+      // Finx max y 
+      let maxY1 = d3.max(data, (d) => { return d[yKey1]; });
+  
+      // Create Y scale
+      let y1 = d3.scaleLinear()
+                  .domain([0, maxY1])
+                  .range([height - margin.bottom, margin.top]); 
+  
+      // Add y axis 
+      svg1.append("g")
+          .attr("transform", `translate(${margin.left}, 0)`) 
+          .call(d3.axisLeft(y1)) 
+          .attr("font-size", '20px') 
+          .call((g) => g.append("text")
+                        .attr("x", 0)
+                        .attr("y", margin.top)
+                        .attr("fill", "black")
+                        .attr("text-anchor", "end")
+                        .text(yKey1)
+        );
+  
+      // Add points
+      const myCircles1 = svg1.selectAll("circle")
+                              .data(data)
+                              .enter()
+                                .append("circle")
+                                .attr("id", (d) => d.id)
+                                .attr("cx", (d) => x1(d[xKey1]))
+                                .attr("cy", (d) => y1(d[yKey1]))
+                                .attr("r", 8)
+                                .style("fill", (d) => color(d.Species))
+                                .style("opacity", 0.5);
+  
+      //TODO: Define a brush (call it brush1)
+      // let brush1;
+  
+      //TODO: Add brush1 to svg1
+      
+    }
+});
