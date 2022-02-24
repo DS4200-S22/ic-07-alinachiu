@@ -9,7 +9,7 @@ Modified: 12/08/21
 // Build your bar charts in this file 
 
 
-// Set dimensions and margins for plots 
+// Set dimensions and margins for plots
 const width = 900; 
 const height = 450; 
 const margin = {left:50, right:50, bottom:50, top:50}; 
