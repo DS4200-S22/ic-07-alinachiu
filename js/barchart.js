@@ -100,8 +100,8 @@ const mouseover1 = function(event, d) {
 // allows for the tooltip to follow the mouse while it is moving
 // on the object
 const mousemove1 = function(event, d) {
-  tooltip1.style("left", (event.x)+"px") 
-          .style("top", (event.y + yTooltipOffset) +"px"); 
+  tooltip1.style("left", (event.pageX)+"px") 
+          .style("top", (event.pageY + yTooltipOffset) +"px"); 
 }
 
 // This creates a constant that represents a function that
@@ -134,8 +134,88 @@ svg1.selectAll(".bar")
 
 
 
+// This code selects the div associated with the id csv-bar
+// and appends an svg to it with the given width, height, and viewBox attributes
+const svg2 = d3
+  .select("#csv-bar")
+  .append("svg")
+  .attr("width", width-margin.left-margin.right)
+  .attr("height", height - margin.top - margin.bottom)
+  .attr("viewBox", [0, 0, width, height]);
 
 
+// Build your scatterplot in this file 
+d3.csv("data/scatter.csv").then((data) => {
+  
+  // We will need scales for all of the following charts to be global
+  let x1, y1, x2, y2, x3, y3;  
 
+  // We will need keys to be global
+  let xKey1, yKey1, xKey2, yKey2, xKey3, yKey3;
 
+  // Scatterplot1
+  {
+    // Find max x
+    let maxX1 = d3.max(data, (d) => { return d[xKey1]; });
+
+    // Create X scale
+    let x1 = d3.scaleLinear()
+                .domain([0,maxX1])
+                .range([margin.left, width-margin.right]); 
+    
+    // Add x axis 
+    svg2.append("g")
+        .attr("transform", `translate(0,${height - margin.bottom})`) 
+        .call(d3.axisBottom(x1))   
+        .attr("font-size", '20px')
+        .call((g) => g.append("text")
+                      .attr("x", width - margin.right)
+                      .attr("y", margin.bottom - 4)
+                      .attr("fill", "black")
+                      .attr("text-anchor", "end")
+                      .text(xKey1)
+      );
+
+    // Finx max y 
+    let maxY1 = d3.max(data, (d) => { return d[yKey1]; });
+
+    // Create Y scale
+    let y1 = d3.scaleLinear()
+                .domain([0, maxY1])
+                .range([height - margin.bottom, margin.top]); 
+
+    // Add y axis 
+    svg2.append("g")
+        .attr("transform", `translate(${margin.left}, 0)`) 
+        .call(d3.axisLeft(y1)) 
+        .attr("font-size", '20px') 
+        .call((g) => g.append("text")
+                      .attr("x", 0)
+                      .attr("y", margin.top)
+                      .attr("fill", "black")
+                      .attr("text-anchor", "end")
+                      .text(yKey1)
+      );
+
+    // Add points
+    svg2.append("g")
+    .attr("transform", `translate(${margin.left}, 0)`) 
+    .call(d3.axisLeft(yScale1)) 
+    .attr("font-size", '20px'); 
+ 
+    // Appends a g element to the SVG that is used to group svg shapes together
+    // more specifically, it appends the x axis to svg1
+    svg2.append("g")
+        .attr("transform", `translate(0,${height - margin.bottom})`) 
+        .call(d3.axisBottom(xScale1) 
+             .tickFormat(i => data1[i].name))  
+     .attr("font-size", '20px'); 
+
+    //TODO: Define a brush (call it brush1)
+    // let brush1;
+
+    //TODO: Add brush1 to svg1
+    
+  }
+});
 

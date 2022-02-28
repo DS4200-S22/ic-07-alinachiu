@@ -6,6 +6,13 @@ Modified: 12/08/21
 
 */
 
+const svg3 = d3
+  .select("#csv-scatter")
+  .append("svg")
+  .attr("width", width-margin.left-margin.right)
+  .attr("height", height - margin.top - margin.bottom)
+  .attr("viewBox", [0, 0, width, height]);
+
 // Build your scatterplot in this file 
 d3.csv("data/scatter.csv").then((data) => {
   
@@ -17,8 +24,8 @@ d3.csv("data/scatter.csv").then((data) => {
   
     // Scatterplot1
     {
-      let xKey1 = "Sepal_Length";
-      let yKey1 = "Petal_Length";
+      let xKey1 = "x";
+      let yKey1 = "y";
   
       // Find max x
       let maxX1 = d3.max(data, (d) => { return d[xKey1]; });
@@ -29,7 +36,7 @@ d3.csv("data/scatter.csv").then((data) => {
                   .range([margin.left, width-margin.right]); 
       
       // Add x axis 
-      svg1.append("g")
+      svg3.append("g")
           .attr("transform", `translate(0,${height - margin.bottom})`) 
           .call(d3.axisBottom(x1))   
           .attr("font-size", '20px')
@@ -50,7 +57,7 @@ d3.csv("data/scatter.csv").then((data) => {
                   .range([height - margin.bottom, margin.top]); 
   
       // Add y axis 
-      svg1.append("g")
+      svg3.append("g")
           .attr("transform", `translate(${margin.left}, 0)`) 
           .call(d3.axisLeft(y1)) 
           .attr("font-size", '20px') 
@@ -63,7 +70,7 @@ d3.csv("data/scatter.csv").then((data) => {
         );
   
       // Add points
-      const myCircles1 = svg1.selectAll("circle")
+      const myCircles1 = svg3.selectAll("circle")
                               .data(data)
                               .enter()
                                 .append("circle")
