@@ -16,12 +16,6 @@ const svg3 = d3
 // Build your scatterplot in this file 
 d3.csv("data/scatter.csv").then((data) => {
   
-    // We will need scales for all of the following charts to be global
-    let x1, y1, x2, y2, x3, y3;  
-  
-    // We will need keys to be global
-    let xKey1, yKey1, xKey2, yKey2, xKey3, yKey3;
-  
     // Scatterplot1
     {
       let xKey1 = "x";
